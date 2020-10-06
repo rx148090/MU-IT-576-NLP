@@ -1,0 +1,42 @@
+Tokenization: ['Tom', 'and', 'Jerry', 'was', 'the', 'best', 'cartoon', 'on', 'in', 'Paris', '.', 'No', 'one', 'watched', 'more', 'than', 'Joe', 'and', 'Bob']
+Total number of tokens: 19
+
+Tokens that are named entities (PERSON) are: 'Tom', 'Jerry', 'Joe' and 'Bob'
+Correctly identified as named entities (PERSON): 'Tom', 'Jerry' and 'Bob'
+Correctly identified as not named entities (PERSON): 'and', 'was', 'the', 'best', 'cartoon', 'on', 'in', '.', 'No', 'watched', 'more', 'than', 'and',
+Incorrectly identified as named entities (PERSON): 'Paris', 'one'
+Incorrectly identified as not named entities (PERSON): 'Joe'
+
+                    Confusion matrix     
+ 
+            |Predicted: NO  | Predicted: YES |
+------------+---------------+----------------+----------------+
+Actual: NO  |    TN = 13    |    FP = 2      |       15       |
+------------+---------------+----------------+----------------+ 
+Actual: Yes |    FN = 1     |    TP = 3      |        4       |
+------------+---------------+----------------+----------------+
+            |      14       |       5        |
+            +---------------+----------------+
+
+
+What is the accuracy of System A?
+
+Accuracy = (TN + TP) / (TP + TN + FP + FN) = (13 + 3)/(13 + 3 + 2 + 1) = 16/19 = 84.21% 
+
+What is the precision of System A?
+
+Precision = TP / (TP + FP) = 3 / (3 + 2) = 60%
+
+What is the recall of System A?
+
+Recall = TP / (TP + FN) = 3 / (3 + 1) = 75%
+
+What is the F1-Measure of System A?
+
+F1-Measure = 2 * (Precision * Recall) / (Precision + Recall) = 2 * 0.6 * 0.75 / (0.6 + 0.75) = 66.7%
+
+Which measure do you think represents the true value of the system, and why?
+
+Firstly, accuracy is not suitable for this problem. It is because our dataset is imbalanced (4 names out of 19 tokens). Even if the model predicts every token to be a non-named entity, it can still reach 78.9% accuracy. Second, choosing the evaluation metrics depends on how we expect the classification model to perform. If we want the model to retrieve as many names as possible yet not care about misclassified samples in our result, we want to emphasize recall since we want more names in the text to be retrieved. If we want our model to yield a result with a high ratio of names, yet do not worry about whatever samples are left in the text, we can focus on precision since precision takes all retrieved documents into account. F1-measure would give us the best estimation of model performance if we want precision and recall to be equally weighted. If we want to have an imbalanced weight for precision and recall, we can use the Fbeta-measure. For example, F0.5-measure (beta = 0.5) puts more weight on precision and F2-measure (beta = 2) puts more weight on recall. Additionally, if we have more than one threshold to adjust our model, we can visualize the change of confusion matrices with the ROC curve. If we have more than one model to compare, we can visualize the model performances with the AUC curve.
+
+For this problem, I would use F1-Measure to evaluate the system.       
